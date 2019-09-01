@@ -1,0 +1,48 @@
+version: '3'
+services:
+  iris-postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=false
+      - POSTGRES_USER=postgres
+      - POSTGRESS_PASSWORD=postgres
+      - POSTGRES_DB=gplay
+    volumes:
+      - gplay-postgres-data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - irisnet
+
+  iris-rabbitmq:
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+      - "15672:15672"
+    volumes:
+      - gplay-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - irisnet
+
+  iris-gplay-crawler:
+    build:
+      context: ./images/gplaycrawler
+    image: iris/gplaycrawler
+    environment:
+      - POSTGRES_HOST=iris-postgres
+      - RABBITMQ_HOST=iris-rabbitmq
+    networks:
+      - irisnet
+
+volumes:
+  gplay-postgres-data:
+  gplay-rabbitmq-data:
+
+networks:
+  irisnet:
+    driver: bridge

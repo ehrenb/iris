@@ -1,6 +1,6 @@
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors import LinkExtractor
-from scrapy.selector import HtmlXPathSelector
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+from scrapy.selector import Selector#HtmlXPathSelector
 from gplaycrawler.items import GplaycrawlerItem
 import urlparse
 
@@ -22,8 +22,8 @@ class MySpider(CrawlSpider):
       return urlparse.urljoin(base, url)
     
   def parse_link(self,response):
-      hxs = HtmlXPathSelector(response)
-      titles = hxs.select('/html')
+      # hxs = Selector(response)
+      titles = response.xpath('/html')
       items = []
       for title in titles :
         item = GplaycrawlerItem()

@@ -27,7 +27,7 @@ def retrieve_token():
     return token, gsfid
 
 def connect_to_googleplay_api():
-    playstore_api = GooglePlayAPI(device_codename='bacon')
+    playstore_api = GooglePlayAPI(locale="en_US", timezone="UTC", device_codename='bacon')
     token, gsfid = retrieve_token()
     playstore_api.login(authSubToken=token, gsfId=int(gsfid, 16))
     return playstore_api
