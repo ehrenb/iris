@@ -24,27 +24,30 @@ class MySpider(CrawlSpider):
       # hxs = Selector(response)
       root_titles = response.xpath('/html')
       items = []
+
+      # if "Preregister" in response
+
       for titles in root_titles:
         print(titles)
         item = GplaycrawlerItem()
-        item["Link"] = response.request.url#''.join(titles.xpath('head/link[5]/@href').extract())
+        item["Link"] = response.request.url
         item['Package'] = item["Link"][46:]
-        item["Item_name"] = ''.join(titles.xpath('//*[@class="document-title"]/div/text()').extract())
-        item["Updated"] = ''.join(titles.xpath('//*[@itemprop="datePublished"]/text()').extract())
+        item["Item_name"] = ''.join(titles.xpath('//*[@itemprop="name"]/span/text()').extract())
+        item["Updated"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[0].extract())
         item["Author"] = ''.join(titles.xpath('//*[@itemprop="author"]/a/span/text()').extract())
-        item["Filesize"] = ''.join(titles.xpath('//*[@itemprop="fileSize"]/text()').extract())
-        item["Downloads"] = ''.join(titles.xpath('//*[@itemprop="numDownloads"]/text()').extract())
-        item["Version"] = ''.join(titles.xpath('//*[@itemprop="softwareVersion"]/text()').extract())
-        item["Compatibility"] = ''.join(titles.xpath('//*[@itemprop="softwareVersion"]/text()').extract())
-        item["Content_rating"] = ''.join(titles.xpath('//*[@itemprop="contentRating"]/text()').extract())
-        item["Author_link"] = ''.join(titles.xpath('//*[@class="dev-link"]/@href').extract())
+        item["Filesize"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[1].extract())
+        item["Downloads"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[2].extract())
+        item["Version"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[3].extract())
+        item["Compatibility"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[4].extract())
+        item["Content_rating"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[5].extract())
+        item["Author_link"] = ''.join(titles.xpath('//*[@class="T32cc UAO9ie"]/a/@href')[0].extract())
 ##        item["Author_link_test"] = titles.xpath('//*[@class="content contains-text-link"]/a/@href').extract()
         item["Genre"] = ''.join(titles.xpath('//*[@itemprop="genre"]/text()').extract())
         item["Price"] = ''.join(titles.xpath('//*[@class="price buy id-track-click"]/span[2]/text()').extract())
         item["Rating_value"] = ''.join(titles.xpath('//*[@class="score"]/text()').extract())
         item["Review_number"] = ''.join(titles.xpath('//*[@class="reviews-num"]/text()').extract())
         item["Description"] = ''.join(titles.xpath('//*[@class="id-app-orig-desc"]//text()').extract())
-        item["IAP"] = ''.join(titles.xpath('//*[@class="inapp-msg"]/text()').extract())
+        item["IAP"] = ''.join(titles.xpath('//*[@class="htlgb"]/text()')[7].extract())
         item["Developer_badge"] = ''.join(titles.xpath('//*[@class="badge-title"]//text()').extract())
         item["Physical_address"] = ''.join(titles.xpath('//*[@class="content physical-address"]/text()').extract())
         item["Video_URL"] = ''.join(titles.xpath('//*[@class="play-action-container"]/@data-video-url').extract())

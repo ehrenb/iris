@@ -1,5 +1,6 @@
 CREATE TABLE apps(
-app_id TEXT,
+id serial PRIMARY KEY,
+package TEXT,
 item_name TEXT,
 updated TEXT,
 author TEXT,
@@ -22,12 +23,11 @@ video_url TEXT,
 developer_id TEXT,
 time_scraped timestamp default current_timestamp,
 downloaded boolean default FALSE, 
-filepath TEXT default null,
-PRIMARY KEY (app_id, version));
+filepath TEXT default null);
 
 CREATE TABLE orphaned(
+id INTEGER PRIMARY KEY,
 app_id TEXT,
 version TEXT,
 filepath TEXT,
-time_inserted timestamp default current_timestamp,
-PRIMARY KEY (app_id, version));
+time_inserted timestamp default current_timestamp);

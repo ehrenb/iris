@@ -14,7 +14,8 @@ def retry(tries=3):
             while tries < max_tries:
                 try:
                     return f(*args, **kwargs)
-                except psycopg2.DatabaseError:
+                except psycopg2.DatabaseError as e:
+                    print(e)
                     tries+=1
                     if tries==max_tries:
                         raise
@@ -37,7 +38,27 @@ def get_cursor(conn):
 @retry()
 def insert_app(cursor, item):
     cursor.execute("""insert into apps 
-                    (app_id, item_name, updated, author, filesize, downloads, version, version_code, compatibility, content_rating, author_link, genre, price, rating_value, review_number, description, iap, developer_badge, physical_address, video_url, developer_id) 
+                    (package,
+                    item_name,
+                    updated,
+                    author,
+                    filesize,
+                    downloads,
+                    version,
+                    version_code,
+                    compatibility,
+                    content_rating,
+                    author_link,
+                    genre,
+                    price,
+                    rating_value,
+                    review_number, 
+                    description,
+                    iap,
+                    developer_badge,
+                    physical_address,
+                    video_url,
+                    developer_id) 
                     values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""", (item["Package"],
                                                                                                                       item["Item_name"],
                                                                                                                       item["Updated"],

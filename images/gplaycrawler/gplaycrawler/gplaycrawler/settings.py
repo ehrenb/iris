@@ -47,3 +47,5 @@ rabbitmq_queue = 'gplay'
 
 #google play token
 token_url = 'https://matlink.fr/token/email/gsfid'
+
+
